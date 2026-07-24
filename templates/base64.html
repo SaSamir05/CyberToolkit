@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Base64 Encoder / Decoder — CyberToolkit{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+  <li class="breadcrumb-item active">Base64</li>
+</ol></nav>
+
+<div class="page-header mb-4">
+  <h2><i class="bi bi-code-slash text-accent"></i> Base64 Encoder / Decoder</h2>
+  <p class="text-muted mb-0">Live conversion between plain text and Base64.</p>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="glass-card p-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <label class="form-label mb-0">Input</label>
+        <div class="btn-group btn-group-sm" role="group">
+          <input type="radio" class="btn-check" name="b64-mode" id="b64-encode" value="encode" checked>
+          <label class="btn btn-outline-light" for="b64-encode">Encode</label>
+          <input type="radio" class="btn-check" name="b64-mode" id="b64-decode" value="decode">
+          <label class="btn btn-outline-light" for="b64-decode">Decode</label>
+        </div>
+      </div>
+      <textarea id="b64-input" class="form-control" rows="10" placeholder="Enter text..."></textarea>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="glass-card p-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <label class="form-label mb-0">Output</label>
+        <div class="d-flex gap-2">
+          <button id="b64-copy" class="btn btn-sm btn-outline-light"><i class="bi bi-clipboard"></i></button>
+          <button id="b64-download" class="btn btn-sm btn-outline-light"><i class="bi bi-download"></i></button>
+        </div>
+      </div>
+      <textarea id="b64-output" class="form-control" rows="10" readonly></textarea>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script>
+const input = document.getElementById('b64-input');
+const output = document.getElementById('b64-output');
+let t;
+async function convert(){
+  const mode = document.querySelector('input[name="b64-mode"]:checked').value;
+  const text = input.value;
+  if (!text) { output.value = ''; return; }
+  const r = await CT.api('/base64/api', { text, mode });
+  output.value = r.ok ? r.result : `⚠ ${r.error}`;
+}
+input.addEventListener('input', () => { clearTimeout(t); t = setTimeout(convert, 200); });
+document.querySelectorAll('input[name="b64-mode"]').forEach(el => el.addEventListener('change', convert));
+document.getElementById('b64-copy').addEventListener('click', () => CT.copy(output.value));
+document.getElementById('b64-download').addEventListener('click', () => CT.download('base64.txt', output.value));
+</script>{% endblock %}

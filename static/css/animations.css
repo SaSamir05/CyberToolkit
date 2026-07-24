@@ -1,0 +1,10 @@
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeInUp 0.4s ease; }
+
+@keyframes pulseAccent { 0%,100%{box-shadow:0 0 0 0 rgba(0,255,170,0.4);} 50%{box-shadow:0 0 0 8px rgba(0,255,170,0);} }
+.pulse-accent { animation: pulseAccent 1.8s infinite; }
+
+.spinner-border.text-accent { color: var(--accent) !important; }
+
+.copied-flash { animation: copiedFlash 0.6s ease; }
+@keyframes copiedFlash { 0%{background:rgba(0,255,170,0.3);} 100%{background:transparent;} }

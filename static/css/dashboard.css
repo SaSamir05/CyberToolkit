@@ -1,0 +1,69 @@
+.tool-card {
+  background: linear-gradient(180deg, rgba(24,34,53,0.9), rgba(16,24,39,0.9));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  color: var(--text);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0,255,170,0.4);
+  box-shadow: 0 24px 50px -20px rgba(0,255,170,0.25);
+}
+.tool-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  background: color-mix(in oklab, var(--tool-color) 18%, transparent);
+  color: var(--tool-color);
+  border: 1px solid color-mix(in oklab, var(--tool-color) 30%, transparent);
+}
+.tool-cta { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+.tool-card:hover .tool-cta i { transform: translateX(3px); }
+.tool-cta i { transition: transform 0.2s ease; }
+
+.stat-card {
+  background: linear-gradient(180deg, rgba(24,34,53,0.8), rgba(16,24,39,0.8));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1rem;
+}
+.stat-value { font-size: 2rem; font-weight: 800; color: var(--text); }
+.stat-label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.result-row {
+  background: rgba(11,18,32,0.5);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+}
+.hash-value {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  word-break: break-all;
+  color: var(--accent);
+  background: rgba(0,255,170,0.05);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  display: inline-block;
+  width: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--muted);
+}
+.empty-state i { font-size: 3rem; opacity: 0.4; display: block; margin-bottom: 0.5rem; }
+
+.table-dark { --bs-table-bg: transparent; --bs-table-color: var(--text); --bs-table-border-color: var(--border); }
+
+.form-check-input:checked { background-color: var(--accent); border-color: var(--accent); }
+.form-check-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,255,170,0.15); }
+.form-range::-webkit-slider-thumb { background: var(--accent); }
+.form-range::-moz-range-thumb { background: var(--accent); }
+
+.progress { background: rgba(255,255,255,0.05); border-radius: 8px; }

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Hash Generator — CyberToolkit{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+  <li class="breadcrumb-item active">Hash Generator</li>
+</ol></nav>
+
+<div class="page-header mb-4">
+  <h2><i class="bi bi-hash text-accent"></i> Hash Generator</h2>
+  <p class="text-muted mb-0">Generate cryptographic hashes with any supported algorithm.</p>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="glass-card p-4">
+      <label class="form-label">Input text</label>
+      <textarea id="hash-input" class="form-control mb-3" rows="8" placeholder="Type or paste text to hash..."></textarea>
+      <div class="d-flex gap-2 flex-wrap">
+        <select id="hash-algo" class="form-select w-auto">
+          <option value="all">All algorithms</option>
+          {% for a in algorithms %}<option value="{{ a }}">{{ a.upper() }}</option>{% endfor %}
+        </select>
+        <button id="hash-generate" class="btn btn-accent"><i class="bi bi-lightning-charge"></i> Generate</button>
+        <button id="hash-clear" class="btn btn-outline-light"><i class="bi bi-eraser"></i> Clear</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="glass-card p-4">
+      <h6 class="text-muted mb-3">Results</h6>
+      <div id="hash-results" class="empty-state">
+        <i class="bi bi-hash"></i><p>Generated hashes will appear here.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+<script>
+document.getElementById('hash-generate').addEventListener('click', async () => {
+  const text = document.getElementById('hash-input').value;
+  const algorithm = document.getElementById('hash-algo').value;
+  if (!text) return CT.toast('Please enter text first', 'warning');
+  const r = await CT.api('/hash/api', { text, algorithm });
+  if (!r.ok) return CT.toast(r.error || 'Failed', 'danger');
+  const container = document.getElementById('hash-results');
+  container.classList.remove('empty-state');
+  container.innerHTML = Object.entries(r.digests).map(([alg, digest]) => `
+    <div class="result-row mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <span class="badge bg-accent-soft">${alg.toUpperCase()}</span>
+        <small class="text-muted">${digest.length} chars</small>
+      </div>
+      <div class="hash-value">${digest}</div>
+      <button class="btn btn-sm btn-outline-light mt-2" data-copy="${digest}"><i class="bi bi-clipboard"></i> Copy</button>
+    </div>`).join('');
+  CT.bindCopy(container);
+});
+document.getElementById('hash-clear').addEventListener('click', () => {
+  document.getElementById('hash-input').value = '';
+  const c = document.getElementById('hash-results');
+  c.classList.add('empty-state');
+  c.innerHTML = '<i class="bi bi-hash"></i><p>Generated hashes will appear here.</p>';
+});
+</script>{% endblock %}
